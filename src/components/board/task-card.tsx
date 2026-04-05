@@ -80,7 +80,7 @@ export const TaskCard = memo(function TaskCard({ task }: { task: Task }) {
     <div
       onClick={() => selectTask(isSelected ? null : task)}
       className={cn(
-        "group relative p-5 rounded-2xl cursor-pointer contain-paint",
+        "group relative p-3.5 md:p-5 rounded-xl md:rounded-2xl cursor-pointer contain-paint",
         "bg-nebula/80 border",
         "transition-[background-color,border-color,box-shadow,transform,opacity] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]",
         "hover:-translate-y-1 hover:bg-cosmos/90 hover:border-white/[0.12] hover:shadow-[0_8px_30px_rgba(0,0,0,0.3)]",
@@ -109,7 +109,7 @@ export const TaskCard = memo(function TaskCard({ task }: { task: Task }) {
 
       {/* Priority bar */}
       <div className={cn(
-        "absolute top-5 left-0 w-[3px] h-8 rounded-r-full",
+        "absolute top-3.5 md:top-5 left-0 w-[3px] h-6 md:h-8 rounded-r-full",
         priority.color, priority.glow,
       )} />
 
@@ -159,13 +159,13 @@ export const TaskCard = memo(function TaskCard({ task }: { task: Task }) {
       </h4>
 
       {/* Description preview */}
-      <p className="text-[12px] text-white/30 leading-[1.6] mb-4 line-clamp-2">
+      <p className="hidden md:block text-[12px] text-white/30 leading-[1.6] mb-4 line-clamp-2">
         {task.description}
       </p>
 
       {/* Labels */}
       {task.labels.length > 0 && (
-        <div className="flex flex-wrap gap-1.5 mb-4">
+        <div className="flex flex-wrap gap-1.5 mb-2 md:mb-4">
           {task.labels.map((label) => (
             <span
               key={label}
@@ -179,7 +179,7 @@ export const TaskCard = memo(function TaskCard({ task }: { task: Task }) {
 
       {/* Subtask progress */}
       {task.subtasks.length > 0 && (
-        <div className="mb-4">
+        <div className="mb-2 md:mb-4">
           <div className="flex items-center justify-between mb-2">
             <span className="text-[10px] text-white/25 font-medium">Subtasks</span>
             <span className="text-[10px] font-mono text-white/25">
@@ -192,7 +192,7 @@ export const TaskCard = memo(function TaskCard({ task }: { task: Task }) {
               style={{ width: `${(completedSubtasks / task.subtasks.length) * 100}%` }}
             />
           </div>
-          <div className="space-y-1">
+          <div className="hidden md:block space-y-1">
             {task.subtasks.slice(0, 3).map((sub) => (
               <div key={sub.id} className="flex items-center gap-2">
                 {sub.completed ? (
@@ -235,7 +235,7 @@ export const TaskCard = memo(function TaskCard({ task }: { task: Task }) {
 
       {/* Agent activity */}
       {task.agent && (task.agent.status === "executing" || task.agent.status === "thinking" || task.agent.status === "awaiting_approval") && (
-        <div className={cn("p-3 rounded-xl border mb-4", agentStatusConfig[task.agent.status].bg)}>
+        <div className={cn("p-3 rounded-xl border mb-2 md:mb-4", agentStatusConfig[task.agent.status].bg)}>
           <div className="flex items-center gap-2 mb-1.5">
             {agentStatusConfig[task.agent.status].pulse ? (
               <span className={cn("inline-flex h-2 w-2 rounded-full shrink-0 animate-pulse-glow", agentStatusConfig[task.agent.status].pulse)} />

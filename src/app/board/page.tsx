@@ -1,5 +1,6 @@
 "use client";
 
+import { useRef, useState, useCallback, useEffect } from "react";
 import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
 import { useBoardStore } from "@/lib/stores/board-store";
 import { BoardColumn } from "@/components/board/board-column";
@@ -8,12 +9,51 @@ import { FilterBar } from "@/components/board/filter-bar";
 import { ProjectSelector } from "@/components/board/project-selector";
 import { Spotlight } from "@/components/ui/spotlight";
 import { useSimulation } from "@/lib/hooks/use-simulation";
+import { cn } from "@/lib/utils/cn";
+
+const columnColors: Record<string, string> = {
+  backlog: "bg-white/30",
+  todo: "bg-info",
+  in_progress: "bg-accent",
+  in_review: "bg-warning",
+  done: "bg-success",
+};
+
+const columnGlow: Record<string, string> = {
+  todo: "shadow-[0_0_6px_rgba(96,165,250,0.3)]",
+  in_progress: "shadow-[0_0_6px_rgba(139,92,246,0.3)]",
+  in_review: "shadow-[0_0_6px_rgba(251,191,36,0.3)]",
+  done: "shadow-[0_0_6px_rgba(52,211,153,0.3)]",
+};
 
 export default function BoardPage() {
   useSimulation();
   const activeBoard = useBoardStore((s) => s.activeBoard);
   const selectedTask = useBoardStore((s) => s.selectedTask);
   const activeProject = useBoardStore((s) => s.activeProject);
+
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [activeCol, setActiveCol] = useState(0);
+
+  const handleScroll = useCallback(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const idx = Math.round(el.scrollLeft / el.clientWidth);
+    setActiveCol((prev) => (prev === idx ? prev : idx));
+  }, []);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    el.addEventListener("scroll", handleScroll, { passive: true });
+    return () => el.removeEventListener("scroll", handleScroll);
+  }, [handleScroll]);
+
+  const scrollToColumn = useCallback((index: number) => {
+    const el = scrollRef.current;
+    if (!el) return;
+    el.scrollTo({ left: index * el.clientWidth, behavior: "smooth" });
+  }, []);
 
   if (!activeBoard) {
     return (
@@ -83,9 +123,36 @@ export default function BoardPage() {
           </div>
           <div className="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
 
+          {/* Mobile column indicator pills */}
+          {activeBoard.columns.length > 0 && (
+            <div className="flex md:hidden items-center gap-1.5 pb-3 shrink-0 overflow-x-auto scrollbar-none">
+              {activeBoard.columns.map((col, i) => (
+                <button
+                  key={col.id}
+                  onClick={() => scrollToColumn(i)}
+                  className={cn(
+                    "flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-[11px] font-semibold whitespace-nowrap shrink-0 transition-all duration-200",
+                    i === activeCol
+                      ? "bg-white/[0.08] border border-white/[0.10] text-white/80"
+                      : "border border-transparent text-white/30"
+                  )}
+                >
+                  <span className={cn("w-2 h-2 rounded-full shrink-0", columnColors[col.id], i === activeCol && columnGlow[col.id])} />
+                  <span>{col.title}</span>
+                  <span className={cn("min-w-[18px] h-[18px] flex items-center justify-center rounded-md text-[10px] font-mono", i === activeCol ? "bg-white/[0.06] text-white/50" : "text-white/20")}>
+                    {col.tasks.length}
+                  </span>
+                </button>
+              ))}
+            </div>
+          )}
+
           {/* Columns — LayoutGroup syncs card animations across columns */}
           <LayoutGroup>
-            <div className="flex flex-1 min-h-0 gap-3 sm:gap-4 -mx-1 px-1 gpu-children">
+            <div
+              ref={scrollRef}
+              className="flex flex-1 min-h-0 gap-0 md:gap-4 -mx-1 px-1 gpu-children scroll-snap-mandatory md:overflow-x-visible"
+            >
               {activeBoard.columns.map((column, index) => (
                 <BoardColumn key={column.id} column={column} index={index} />
               ))}

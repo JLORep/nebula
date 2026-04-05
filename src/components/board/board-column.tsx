@@ -25,7 +25,13 @@ const columnGlow: Record<string, string> = {
 export const BoardColumn = memo(function BoardColumn({ column, index }: { column: Column; index: number }) {
   return (
     <div
-      className="flex flex-col flex-1 min-w-0 h-full animate-[fadeSlideIn_0.5s_var(--ease-out-expo)_both]"
+      className={cn(
+        "flex flex-col h-full animate-[fadeSlideIn_0.5s_var(--ease-out-expo)_both]",
+        // Mobile: full-width snap targets
+        "w-full min-w-full shrink-0 snap-start px-1",
+        // Desktop: flex-1 equal distribution
+        "md:w-auto md:min-w-0 md:shrink md:flex-1 md:px-0",
+      )}
       style={{ animationDelay: `${index * 60}ms` }}
     >
       {/* Column header */}
@@ -54,7 +60,7 @@ export const BoardColumn = memo(function BoardColumn({ column, index }: { column
       </div>
 
       {/* Tasks — AnimatePresence enables exit animations, layout group syncs cross-column moves */}
-      <div className="flex-1 min-h-0 space-y-2.5 overflow-y-auto scrollbar-none px-1 pb-2">
+      <div className="flex-1 min-h-0 space-y-2 md:space-y-2.5 overflow-y-auto scrollbar-none px-1 pb-2">
         {column.tasks.map((task) => (
           <TaskCard key={task.id} task={task} />
         ))}
