@@ -1,5 +1,5 @@
 // ============================================================================
-// FLOW — Core Type Definitions
+// NEBULA — Core Type Definitions
 // Every type here is production-grade. Mock data uses these same types.
 // ============================================================================
 

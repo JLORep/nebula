@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
-import { Zap, LayoutDashboard, Kanban, Map, Bot, Shield, ShieldCheck, Bell, Sun, Moon, Play, Pause, RotateCcw } from "lucide-react";
+import { Zap, LayoutDashboard, Kanban, Map, Bot, Shield, ShieldCheck, Bell, Sun, Moon, Play, Pause, RotateCcw, Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils/cn";
 import { useThemeStore } from "@/lib/stores/theme-store";
 import { useSimulationStore } from "@/lib/stores/simulation-store";
@@ -55,10 +55,16 @@ function SimControls() {
 
 export function FloatingNav() {
   const [visible, setVisible] = useState(true);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { scrollY } = useScroll();
   const theme = useThemeStore((s) => s.theme);
   const toggleTheme = useThemeStore((s) => s.toggleTheme);
   const pathname = usePathname();
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [pathname]);
 
   useMotionValueEvent(scrollY, "change", (current) => {
     const prev = scrollY.getPrevious() ?? 0;
@@ -86,10 +92,19 @@ export function FloatingNav() {
               <Zap className="w-4 h-4 text-accent" />
               <div className="absolute inset-0 rounded-xl bg-accent/10 animate-pulse-glow" />
             </div>
-            <span className="text-[15px] font-bold tracking-[-0.03em] text-white/90">FLOW</span>
+            <span className="text-[15px] font-bold tracking-[-0.03em] text-white/90">NEBULA</span>
           </Link>
 
-          {/* Center nav items */}
+          {/* Hamburger button — mobile only */}
+          <button
+            className="md:hidden p-2 rounded-xl text-white/40 hover:text-white/70 hover:bg-white/[0.06] transition-colors duration-200"
+            onClick={() => setMobileMenuOpen((prev) => !prev)}
+            aria-label="Toggle navigation menu"
+          >
+            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
+
+          {/* Center nav items — desktop only */}
           <div className="hidden md:flex items-center gap-1">
             {navItems.map((item) => {
               const isActive = pathname === item.href;
@@ -136,6 +151,41 @@ export function FloatingNav() {
             </button>
           </div>
         </div>
+
+        {/* Mobile menu overlay */}
+        <AnimatePresence>
+          {mobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              className="md:hidden mt-2 overflow-hidden rounded-2xl border border-white/[0.08] bg-void/95 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.3)]"
+            >
+              <div className="flex flex-col py-2">
+                {navItems.map((item) => {
+                  const isActive = pathname === item.href;
+                  return (
+                    <Link
+                      key={item.label}
+                      href={item.href}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className={cn(
+                        "flex items-center gap-3 px-5 py-3 text-[14px] font-medium transition-colors duration-200",
+                        isActive
+                          ? "text-white/90 bg-white/[0.08]"
+                          : "text-white/40 hover:text-white/80 hover:bg-white/[0.04]"
+                      )}
+                    >
+                      <item.icon className="w-4.5 h-4.5" />
+                      <span>{item.label}</span>
+                    </Link>
+                  );
+                })}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </motion.nav>
     </AnimatePresence>
   );

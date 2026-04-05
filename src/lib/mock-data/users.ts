@@ -1,7 +1,7 @@
 import type { User } from "@/lib/types";
 
 // ============================================================================
-// FLOW — Mock Users (10 across roles)
+// NEBULA — Mock Users (10 across roles)
 // ============================================================================
 
 export const users: Record<string, User> = {

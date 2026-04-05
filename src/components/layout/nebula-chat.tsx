@@ -296,7 +296,7 @@ export function NebulaChat() {
             exit={{ opacity: 0, scale: 0.8 }}
             transition={{ type: "spring", stiffness: 300, damping: 25 }}
             onClick={toggle}
-            className="fixed left-3 top-1/2 -translate-y-1/2 z-40 flex items-center justify-center w-10 h-10 rounded-full bg-void/80 backdrop-blur-md border border-accent/25 shadow-[0_0_20px_rgba(139,92,246,0.35),0_0_40px_rgba(139,92,246,0.15),0_4px_20px_rgba(0,0,0,0.3)] hover:bg-white/[0.06] hover:scale-105 active:scale-95 transition-all duration-200"
+            className="fixed left-3 top-1/2 -translate-y-1/2 max-md:top-auto max-md:translate-y-0 max-md:bottom-6 z-40 flex items-center justify-center w-10 h-10 rounded-full bg-void/80 backdrop-blur-md border border-accent/25 shadow-[0_0_20px_rgba(139,92,246,0.35),0_0_40px_rgba(139,92,246,0.15),0_4px_20px_rgba(0,0,0,0.3)] hover:bg-white/[0.06] hover:scale-105 active:scale-95 transition-all duration-200"
           >
             <span className="absolute inset-0 rounded-full bg-accent/15 animate-pulse-glow" />
             <Sparkles className="w-4 h-4 text-accent relative z-10" />

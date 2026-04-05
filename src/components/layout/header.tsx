@@ -16,7 +16,7 @@ export function Header() {
       <div className="flex items-center gap-5">
         <div>
           <h1 className="text-xl font-semibold tracking-[-0.02em] text-white/95">
-            {activeBoard?.name ?? "FLOW"}
+            {activeBoard?.name ?? "NEBULA"}
           </h1>
           {activeBoard?.sprint && (
             <div className="flex items-center gap-2 mt-0.5">

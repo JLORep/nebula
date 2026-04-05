@@ -1,7 +1,7 @@
 import type { Agent } from "@/lib/types";
 
 // ============================================================================
-// FLOW — Mock Agent Pool (10 reusable agents)
+// NEBULA — Mock Agent Pool (10 reusable agents)
 // ============================================================================
 
 export const agents: Record<string, Agent> = {

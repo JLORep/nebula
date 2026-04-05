@@ -59,7 +59,7 @@ export function Sidebar() {
               transition={SPRING}
               className="flex flex-col"
             >
-              <span className="text-[15px] font-semibold tracking-[-0.02em] text-white/95">FLOW</span>
+              <span className="text-[15px] font-semibold tracking-[-0.02em] text-white/95">NEBULA</span>
               <span className="text-[10px] text-white/30 font-mono tracking-wider">v0.1.0</span>
             </motion.div>
           )}

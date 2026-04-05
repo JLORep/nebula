@@ -39,7 +39,7 @@ const seedMessages: AdvisorMessage[] = [
     id: "adv-seed-1",
     timestamp: Date.now() - 120000,
     type: "system",
-    content: "FLOW Advisor online. I'll monitor your sprint and surface insights as agents work.",
+    content: "NEBULA Advisor online. I'll monitor your sprint and surface insights as agents work.",
     action: null,
     taskKey: null,
   },

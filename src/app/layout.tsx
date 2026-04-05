@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "FLOW — Agentic AI Orchestration",
+  title: "NEBULA — Agentic AI Orchestration",
   description: "Where tickets don't just get tracked. They get solved.",
 };
 

@@ -25,7 +25,7 @@ function getContextualNote(key: string, projectName: string): string {
     "story-points": `${projectName} uses Fibonacci sizing. Check the timeline to see point distributions.`,
     "definition-of-done": `${projectName} requires code review, tests passing, and staging deploy for each story.`,
     "wip-limit": `${projectName} enforces a WIP limit of 3 items in progress — visible on the board.`,
-    "scrum-master": `FLOW acts as an AI Scrum Master for ${projectName}, providing coaching insights above.`,
+    "scrum-master": `NEBULA acts as an AI Scrum Master for ${projectName}, providing coaching insights above.`,
     "product-owner": `${projectName} has a Product Owner who prioritizes the backlog and approves agent actions.`,
     increment: `Each sprint produces a shippable increment for ${projectName}.`,
     "sprint-review": `${projectName} demos completed work to stakeholders at the end of each sprint.`,

@@ -1,5 +1,5 @@
 // ============================================================================
-// FLOW — Motion Design System
+// NEBULA — Motion Design System
 // Apple-grade spring configs. Softer damping = fluid, organic feel.
 // Rule: high damping prevents bounce, moderate stiffness = responsive.
 // ============================================================================
