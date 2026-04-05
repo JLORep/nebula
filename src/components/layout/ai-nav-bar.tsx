@@ -2,17 +2,17 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, ArrowUp, Users, Plus, DollarSign, Zap } from "lucide-react";
+import { Sparkles, ArrowUp, Plus, DollarSign, Zap } from "lucide-react";
 import { cn } from "@/lib/utils/cn";
 import { useBoardStore } from "@/lib/stores/board-store";
 import { MovingBorderButton } from "@/components/ui/moving-border";
 
 // ============================================================================
-// AI Nav Bar — the command center. Claude-style prompt bar, bold + vibrant.
+// AI Nav Bar — the command center. Bold, prominent, zero scrollbars.
 // ============================================================================
 
 const placeholders = [
-  "Ask FLOW anything...",
+  "Ask Nebula anything...",
   "Create a new task...",
   "Analyze sprint velocity...",
   "Find blocked tickets...",
@@ -29,8 +29,6 @@ export function AINavBar() {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const toggleNewTaskModal = useBoardStore((s) => s.toggleNewTaskModal);
-  const toggleSquadSidebar = useBoardStore((s) => s.toggleSquadSidebar);
-  const squadSidebarOpen = useBoardStore((s) => s.squadSidebarOpen);
   const activeBoard = useBoardStore((s) => s.activeBoard);
 
   const agents = activeBoard?.agents ?? [];
@@ -48,12 +46,12 @@ export function AINavBar() {
     return () => clearInterval(id);
   }, [isFocused, inputValue]);
 
-  // Auto-resize textarea
+  // Auto-resize textarea (no scrollbar — overflow hidden)
   const autoResize = useCallback(() => {
     const el = textareaRef.current;
     if (!el) return;
     el.style.height = "auto";
-    el.style.height = `${Math.min(el.scrollHeight, 120)}px`;
+    el.style.height = `${Math.min(el.scrollHeight, 140)}px`;
   }, []);
 
   useEffect(() => { autoResize(); }, [inputValue, autoResize]);
@@ -81,40 +79,45 @@ export function AINavBar() {
       initial={{ opacity: 0, y: 60 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ type: "spring", stiffness: 180, damping: 26, delay: 0.2 }}
-      className="fixed bottom-5 inset-x-0 mx-auto max-w-[52rem] z-50 px-4"
+      className="fixed bottom-6 left-[340px] right-[340px] mx-auto max-w-[56rem] z-50 px-6"
     >
-      {/* Ambient glow behind the bar */}
-      <div className="absolute -inset-3 rounded-[28px] bg-accent/[0.04] blur-2xl pointer-events-none" />
-      <div className="absolute inset-x-12 -bottom-2 h-8 rounded-full bg-accent/[0.06] blur-xl pointer-events-none" />
+      {/* Ambient glow — stronger for prominence */}
+      <div className="absolute -inset-4 rounded-[32px] bg-accent/[0.06] blur-3xl pointer-events-none" />
+      <div className="absolute inset-x-8 -bottom-3 h-12 rounded-full bg-accent/[0.08] blur-2xl pointer-events-none" />
 
       <div
         className={cn(
-          "relative flex flex-col rounded-[20px] border bg-void/85 backdrop-blur-xl shadow-[0_-12px_48px_rgba(0,0,0,0.3),0_0_0_1px_rgba(255,255,255,0.04)] gpu transition-all duration-300",
+          "relative flex flex-col rounded-[24px] border bg-void/90 backdrop-blur-2xl gpu transition-all duration-300",
+          "shadow-[0_-16px_64px_rgba(0,0,0,0.35),0_0_0_1px_rgba(255,255,255,0.05)]",
           isFocused
-            ? "border-accent/25 shadow-[0_-12px_48px_rgba(0,0,0,0.3),0_0_48px_rgba(139,92,246,0.08),0_0_0_1px_rgba(139,92,246,0.15)]"
+            ? "border-accent/30 shadow-[0_-16px_64px_rgba(0,0,0,0.35),0_0_64px_rgba(139,92,246,0.12),0_0_0_1px_rgba(139,92,246,0.2)]"
             : "border-white/[0.08]"
         )}
       >
         {/* Top edge highlight — brighter on focus */}
         <div className={cn(
-          "absolute inset-x-0 top-0 h-px rounded-t-[20px] transition-opacity duration-300",
-          "bg-gradient-to-r from-transparent via-accent/30 to-transparent",
+          "absolute inset-x-0 top-0 h-px rounded-t-[24px] transition-opacity duration-300",
+          "bg-gradient-to-r from-transparent via-accent/40 to-transparent",
           isFocused ? "opacity-100" : "opacity-50"
         )} />
 
+        {/* Side edge accents */}
+        <div className="absolute inset-y-4 left-0 w-px bg-gradient-to-b from-transparent via-accent/10 to-transparent" />
+        <div className="absolute inset-y-4 right-0 w-px bg-gradient-to-b from-transparent via-accent/10 to-transparent" />
+
         {/* Main input area */}
-        <form onSubmit={handleSubmit} className="flex items-end gap-3 px-5 pt-4 pb-3">
-          {/* Sparkles icon */}
+        <form onSubmit={handleSubmit} className="flex items-end gap-4 px-6 pt-5 pb-4">
+          {/* Sparkles icon — bigger */}
           <div className={cn(
-            "flex items-center justify-center w-9 h-9 rounded-xl shrink-0 mb-0.5 transition-all duration-300",
+            "flex items-center justify-center w-11 h-11 rounded-2xl shrink-0 mb-0.5 transition-all duration-300",
             isFocused
-              ? "bg-accent/15 text-accent shadow-[0_0_16px_rgba(139,92,246,0.15)]"
-              : "bg-white/[0.04] text-white/20"
+              ? "bg-gradient-to-br from-accent/20 to-cyan-500/10 text-accent shadow-[0_0_20px_rgba(139,92,246,0.2)]"
+              : "bg-white/[0.05] text-white/25"
           )}>
-            <Sparkles className="w-[18px] h-[18px]" />
+            <Sparkles className="w-5 h-5" />
           </div>
 
-          {/* Textarea */}
+          {/* Textarea — no scrollbar */}
           <div className="flex-1 min-w-0">
             <textarea
               ref={textareaRef}
@@ -125,51 +128,32 @@ export function AINavBar() {
               onKeyDown={handleKeyDown}
               placeholder={placeholders[placeholderIdx]}
               rows={1}
-              className="w-full bg-transparent text-[15px] leading-relaxed text-white/90 placeholder:text-white/25 outline-none resize-none min-h-[36px] max-h-[120px] py-1.5"
+              className="w-full bg-transparent text-[16px] leading-relaxed text-white/90 placeholder:text-white/25 outline-none resize-none overflow-hidden min-h-[44px] max-h-[140px] py-2"
             />
           </div>
 
-          {/* Send button */}
+          {/* Send button — bigger */}
           <motion.button
             type="submit"
             disabled={!hasInput}
             whileHover={hasInput ? { scale: 1.08 } : undefined}
             whileTap={hasInput ? { scale: 0.92 } : undefined}
             className={cn(
-              "flex items-center justify-center w-10 h-10 rounded-xl shrink-0 mb-0.5 transition-all duration-250",
+              "flex items-center justify-center w-11 h-11 rounded-2xl shrink-0 mb-0.5 transition-all duration-250",
               hasInput
-                ? "bg-gradient-to-br from-accent to-[#7c3aed] text-white shadow-[0_0_20px_rgba(139,92,246,0.4),0_4px_12px_rgba(139,92,246,0.25)] hover:shadow-[0_0_28px_rgba(139,92,246,0.5),0_4px_16px_rgba(139,92,246,0.35)]"
+                ? "bg-gradient-to-br from-accent to-[#7c3aed] text-white shadow-[0_0_24px_rgba(139,92,246,0.45),0_4px_16px_rgba(139,92,246,0.3)] hover:shadow-[0_0_32px_rgba(139,92,246,0.55),0_4px_20px_rgba(139,92,246,0.4)]"
                 : "bg-white/[0.04] text-white/15 cursor-not-allowed"
             )}
           >
-            <ArrowUp className="w-[18px] h-[18px]" strokeWidth={2.5} />
+            <ArrowUp className="w-5 h-5" strokeWidth={2.5} />
           </motion.button>
         </form>
 
-        {/* Bottom toolbar — actions row */}
-        <div className="flex items-center justify-between gap-2 px-5 pb-3.5 pt-0.5">
-          <div className="flex items-center gap-2">
-            {/* Squad toggle */}
-            <button
-              onClick={toggleSquadSidebar}
-              className={cn(
-                "relative flex items-center gap-2 px-3 py-2 rounded-xl text-[12px] font-medium transition-all duration-200 shrink-0",
-                squadSidebarOpen
-                  ? "bg-accent/12 text-accent border border-accent/15"
-                  : "text-white/35 hover:text-white/70 hover:bg-white/[0.06] border border-transparent"
-              )}
-            >
-              <Users className="w-4 h-4" />
-              <span className="hidden sm:inline">Squad</span>
-              {activeAgentCount > 0 && (
-                <span className="flex items-center justify-center min-w-[18px] h-[18px] px-1 rounded-full bg-success/15 text-success text-[10px] font-bold border border-success/20">
-                  {activeAgentCount}
-                </span>
-              )}
-            </button>
-
+        {/* Bottom toolbar */}
+        <div className="flex items-center justify-between gap-3 px-6 pb-4 pt-0">
+          <div className="flex items-center gap-3">
             {/* Sprint cost */}
-            <div className="hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-xl text-[11px] font-mono text-white/20 border border-transparent">
+            <div className="hidden sm:flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-[11px] font-mono text-white/25 bg-white/[0.03] border border-white/[0.04]">
               <DollarSign className="w-3.5 h-3.5" />
               <span>{totalCost.toFixed(2)}</span>
             </div>
@@ -181,7 +165,7 @@ export function AINavBar() {
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.8 }}
-                  className="hidden md:flex items-center gap-1.5 px-3 py-2 rounded-xl text-[11px] font-medium text-accent/60"
+                  className="hidden md:flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-[11px] font-medium text-accent/70 bg-accent/[0.04] border border-accent/[0.06]"
                 >
                   <Zap className="w-3.5 h-3.5" />
                   <span>{activeAgentCount} agent{activeAgentCount !== 1 ? "s" : ""} working</span>
@@ -194,8 +178,8 @@ export function AINavBar() {
           {/* New Flow button */}
           <MovingBorderButton
             borderRadius="0.75rem"
-            containerClassName="h-10"
-            className="text-[12px] px-5"
+            containerClassName="h-11"
+            className="text-[13px] px-6"
             duration={2500}
             onClick={toggleNewTaskModal}
           >

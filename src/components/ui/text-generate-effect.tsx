@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { motion, stagger, useAnimate } from "framer-motion";
 import { cn } from "@/lib/utils/cn";
 
@@ -16,11 +16,8 @@ export const TextGenerateEffect = ({
 }) => {
   const [scope, animate] = useAnimate();
   const wordsArray = words.split(" ");
-  const hasRun = useRef(false);
 
   useEffect(() => {
-    if (hasRun.current) return;
-    hasRun.current = true;
     animate(
       "span",
       { opacity: 1 },

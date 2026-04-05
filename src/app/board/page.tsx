@@ -5,6 +5,7 @@ import { useBoardStore } from "@/lib/stores/board-store";
 import { BoardColumn } from "@/components/board/board-column";
 import { TaskModal } from "@/components/board/task-modal";
 import { FilterBar } from "@/components/board/filter-bar";
+import { ProjectSelector } from "@/components/board/project-selector";
 import { Spotlight } from "@/components/ui/spotlight";
 import { useSimulation } from "@/lib/hooks/use-simulation";
 
@@ -23,29 +24,22 @@ export default function BoardPage() {
   }
 
   return (
-    <main className="relative z-10 min-h-screen pt-20 sm:pt-24 pb-8 sm:pb-12">
+    <main className="relative z-10 h-screen flex flex-col pt-20 sm:pt-24 overflow-hidden">
       {/* Spotlight — hidden on mobile for perf */}
       <div className="hidden md:block">
         <Spotlight className="-top-40 left-40 md:-top-20" fill="rgba(139, 92, 246, 0.08)" />
       </div>
 
-      <div className="px-4 sm:px-6 md:px-10 max-w-[1600px] mx-auto">
+      <div className="flex flex-col flex-1 min-h-0 px-5 sm:px-7 md:px-10">
         {/* Board header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ type: "spring", stiffness: 300, damping: 30 }}
-          className="mb-6 sm:mb-8"
+          className="mb-4 sm:mb-6 shrink-0"
         >
           <div className="flex items-center gap-3 mb-1 sm:mb-2">
-            {activeProject && (
-              <div
-                className="flex items-center gap-2 px-2.5 py-1 rounded-lg border text-[11px] font-mono"
-                style={{ backgroundColor: `${activeProject.color}10`, borderColor: `${activeProject.color}30`, color: activeProject.color }}
-              >
-                {activeProject.key}
-              </div>
-            )}
+            <ProjectSelector />
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-[-0.03em] text-white/95">
               {activeBoard.name}
             </h1>
@@ -75,12 +69,12 @@ export default function BoardPage() {
         {/* Filter bar */}
         <FilterBar />
 
-        {/* Board container */}
+        {/* Board container — fills remaining height */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.15, type: "spring", stiffness: 200, damping: 25 }}
-          className="relative rounded-2xl sm:rounded-3xl border border-white/[0.06] bg-white/[0.02] p-3 sm:p-6 overflow-hidden"
+          className="relative flex-1 min-h-0 flex flex-col rounded-2xl sm:rounded-3xl border border-white/[0.06] bg-white/[0.02] p-3 sm:p-5 mb-4 overflow-hidden"
         >
           {/* Ambient glows — hidden on mobile */}
           <div className="hidden md:block">
@@ -91,7 +85,7 @@ export default function BoardPage() {
 
           {/* Columns — LayoutGroup syncs card animations across columns */}
           <LayoutGroup>
-            <div className="flex gap-3 sm:gap-5 overflow-x-auto pb-2 -mx-1 px-1 scroll-smooth-x gpu-children">
+            <div className="flex flex-1 min-h-0 gap-3 sm:gap-4 -mx-1 px-1 gpu-children">
               {activeBoard.columns.map((column, index) => (
                 <BoardColumn key={column.id} column={column} index={index} />
               ))}

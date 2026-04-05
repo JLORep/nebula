@@ -3,6 +3,7 @@
 import { create } from "zustand";
 import { useBoardStore } from "./board-store";
 import { useAdvisorStore } from "./advisor-store";
+import { useNebulaChatStore } from "./nebula-chat-store";
 import { getActionMessage } from "@/lib/utils/simulation-messages";
 import { generateTerminalOutput } from "@/lib/utils/terminal-messages";
 import type { TerminalLine, TerminalLineType } from "@/lib/utils/terminal-messages";
@@ -37,6 +38,21 @@ interface SimulationState {
   tick: () => void;
   terminalTick: () => void;
 }
+
+// Agent name → text color for nebula chat messages
+const agentTextColorMap: Record<string, string> = {
+  Athena: "text-cyan-400",
+  Blueprint: "text-violet-400",
+  Flow: "text-emerald-400",
+  Sentinel: "text-blue-400",
+  Oracle: "text-amber-400",
+  Nexus: "text-teal-400",
+  Cipher: "text-orange-400",
+  Spark: "text-lime-400",
+  Atlas: "text-indigo-400",
+  Prism: "text-pink-400",
+  Forge: "text-emerald-400",
+};
 
 const MAX_EVENTS = 30;
 const MAX_TERMINAL_LINES = 50;
@@ -291,6 +307,11 @@ export const useSimulationStore = create<SimulationState>((set, get) => ({
               action: null,
               taskKey: result.taskKey,
             });
+            // Push to nebula chat
+            useNebulaChatStore.getState().pushMessage({
+              sender: "system",
+              content: `Completed ${result.taskKey}: ${result.title}${pointsMsg}`,
+            });
           } else {
             pushEvent(set, get, makeEvent("task_moved", "ArrowRight", "var(--info)", `${result.taskKey} → ${statusLabels[result.newStatus]}`, result.taskKey));
           }
@@ -344,6 +365,16 @@ export const useSimulationStore = create<SimulationState>((set, get) => ({
         const actionMsg = taskForMsg ? getActionMessage(agent.role, taskForMsg.title) : null;
 
         board.updateAgentStatus(agent.id, newStatus, newStatus === "idle" || newStatus === "completed" ? undefined : (actionMsg ?? undefined));
+
+        // Push agent activity to nebula chat (~50% — only executing/thinking transitions)
+        if ((newStatus === "executing" || newStatus === "thinking") && actionMsg) {
+          useNebulaChatStore.getState().pushMessage({
+            sender: "agent",
+            agentName: agent.name,
+            agentColor: agentTextColorMap[agent.name],
+            content: actionMsg,
+          });
+        }
 
         const statusEmoji: Record<AgentStatus, string> = {
           idle: "Circle",
@@ -411,6 +442,13 @@ export const useSimulationStore = create<SimulationState>((set, get) => ({
           content: `${agent.name} requires human approval for: ${agent.currentAction ?? "current action"}. Review and approve to continue.`,
           action: "Review approval",
           taskKey: null,
+        });
+        // Push to nebula chat
+        useNebulaChatStore.getState().pushMessage({
+          sender: "agent",
+          agentName: agent.name,
+          agentColor: agentTextColorMap[agent.name],
+          content: `Awaiting human approval \u2014 ${agent.currentAction ?? "action pending"}`,
         });
         break;
       }

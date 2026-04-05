@@ -228,15 +228,15 @@ export function MetricsGrid() {
   ];
 
   return (
-    <div className="px-4 md:px-8 py-4 pb-12">
+    <div className="py-4 pb-8">
       <div className="animate-[fadeSlideIn_0.5s_var(--ease-out-expo)_300ms_both]">
-        <div className="flex items-center gap-3 mb-6 max-w-7xl mx-auto">
+        <div className="flex items-center gap-3 mb-6">
           <div className="h-px flex-1 bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
           <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.15em] text-white/20 font-medium">Mission Control</span>
           <div className="h-px flex-1 bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
         </div>
 
-        <BentoGrid className="max-w-7xl mx-auto">
+        <BentoGrid>
           {items.map((item, idx) => (
             <BentoGridItem
               key={idx}

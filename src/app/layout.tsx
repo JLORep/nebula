@@ -18,9 +18,6 @@ export const metadata: Metadata = {
   description: "Where tickets don't just get tracked. They get solved.",
 };
 
-// Inline script to prevent theme flash (runs before paint)
-const themeScript = `(function(){try{var t=localStorage.getItem('flow-theme');if(t==='light'||t==='dark'){document.documentElement.setAttribute('data-theme',t)}else{document.documentElement.setAttribute('data-theme','dark')}}catch(e){document.documentElement.setAttribute('data-theme','dark')}})()`;
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -33,9 +30,6 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
-      </head>
       <body className="min-h-full bg-void font-[family-name:var(--font-geist-sans)]">
         <AppShell>{children}</AppShell>
       </body>

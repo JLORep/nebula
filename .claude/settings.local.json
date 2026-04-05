@@ -17,7 +17,8 @@
       "Bash(head:*)",
       "WebFetch(domain:www.atlassian.com)",
       "Bash(find:*)",
-      "Bash(cd:*)"
+      "Bash(cd:*)",
+      "WebFetch(domain:nebula-beta-hazel.vercel.app)"
     ]
   }
 }

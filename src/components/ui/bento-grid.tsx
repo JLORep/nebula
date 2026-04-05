@@ -5,7 +5,7 @@ import React from "react";
 export const BentoGrid = ({ className, children }: { className?: string; children?: React.ReactNode }) => {
   return (
     <div className={cn(
-      "mx-auto grid max-w-7xl grid-cols-1 gap-3",
+      "grid grid-cols-1 gap-3",
       "sm:grid-cols-2 md:grid-cols-3",
       "md:auto-rows-[18rem]",
       className

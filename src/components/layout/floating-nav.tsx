@@ -1,12 +1,11 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
-import { Zap, LayoutDashboard, Kanban, Map, Bot, Shield, ShieldCheck, Bell, ChevronDown, Sun, Moon, Play, Pause, RotateCcw } from "lucide-react";
+import { Zap, LayoutDashboard, Kanban, Map, Bot, Shield, ShieldCheck, Bell, Sun, Moon, Play, Pause, RotateCcw } from "lucide-react";
 import { cn } from "@/lib/utils/cn";
-import { useBoardStore } from "@/lib/stores/board-store";
 import { useThemeStore } from "@/lib/stores/theme-store";
 import { useSimulationStore } from "@/lib/stores/simulation-store";
 
@@ -18,80 +17,6 @@ const navItems = [
   { icon: Shield, label: "Scanner", href: "/scanner" },
   { icon: ShieldCheck, label: "Gates", href: "/gates" },
 ];
-
-function ProjectSelector() {
-  const [open, setOpen] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-  const projects = useBoardStore((s) => s.projects);
-  const activeProject = useBoardStore((s) => s.activeProject);
-  const setActiveProject = useBoardStore((s) => s.setActiveProject);
-
-  useEffect(() => {
-    function handleClickOutside(e: MouseEvent) {
-      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-  if (!activeProject) return null;
-
-  return (
-    <div ref={ref} className="relative hidden md:block">
-      <button
-        onClick={() => setOpen(!open)}
-        className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[12px] font-medium text-white/50 hover:text-white/80 hover:bg-white/[0.06] transition-colors duration-200"
-      >
-        <div className="w-2 h-2 rounded-full" style={{ backgroundColor: activeProject.color }} />
-        <span className="max-w-[100px] truncate">{activeProject.key}</span>
-        <ChevronDown className={cn("w-3 h-3 transition-transform", open && "rotate-180")} />
-      </button>
-
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ opacity: 0, y: -4, scale: 0.96 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -4, scale: 0.96 }}
-            transition={{ type: "spring", stiffness: 340, damping: 30 }}
-            className="absolute top-full left-0 mt-2 w-64 rounded-xl border border-white/[0.08] bg-nebula/98 backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.5)] overflow-hidden z-50"
-          >
-            <div className="p-1.5">
-              {projects.map((project) => (
-                <Link
-                  key={project.id}
-                  href="/board"
-                  onClick={() => { setActiveProject(project.id); setOpen(false); }}
-                  className={cn(
-                    "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors duration-150",
-                    project.id === activeProject.id
-                      ? "bg-white/[0.06]"
-                      : "hover:bg-white/[0.04]"
-                  )}
-                >
-                  <div
-                    className="w-3 h-3 rounded-md shrink-0"
-                    style={{ backgroundColor: project.color }}
-                  />
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-center gap-2">
-                      <span className="text-[12px] font-semibold text-white/80 truncate">{project.name}</span>
-                      <span className="text-[10px] font-mono text-white/20 shrink-0">{project.key}</span>
-                    </div>
-                    <span className="text-[10px] text-white/25 truncate block">{project.description}</span>
-                  </div>
-                  {project.id === activeProject.id && (
-                    <div className="w-1.5 h-1.5 rounded-full bg-accent shrink-0" />
-                  )}
-                </Link>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
-}
 
 function SimControls() {
   const running = useSimulationStore((s) => s.running);
@@ -163,9 +88,6 @@ export function FloatingNav() {
             </div>
             <span className="text-[15px] font-bold tracking-[-0.03em] text-white/90">FLOW</span>
           </Link>
-
-          {/* Project selector */}
-          <ProjectSelector />
 
           {/* Center nav items */}
           <div className="hidden md:flex items-center gap-1">

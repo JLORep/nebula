@@ -173,9 +173,9 @@ export function AgileCoach() {
   if (!activeProject) return null;
 
   return (
-    <div className="px-4 md:px-8 py-4 pb-16">
+    <div className="py-2">
       {/* Section divider */}
-      <div className="flex items-center gap-3 mb-6 max-w-7xl mx-auto">
+      <div className="flex items-center gap-3 mb-6 ">
         <div className="h-px flex-1 bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
         <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.15em] text-white/20 font-medium">AI Scrum Master</span>
         <div className="h-px flex-1 bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
@@ -185,10 +185,10 @@ export function AgileCoach() {
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4, ...SPRING_GENTLE }}
-        className="max-w-7xl mx-auto"
+        className="space-y-4"
       >
         {/* BentoGrid-style layout */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
           {/* Sprint Health Dashboard — span 2 */}
           <div className="md:col-span-2 rounded-2xl border border-white/[0.06] bg-nebula/80 p-5 relative overflow-hidden">
             <div className="absolute inset-x-4 top-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-50" />

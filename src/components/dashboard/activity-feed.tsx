@@ -80,8 +80,8 @@ export function ActivityFeed() {
   }, [events.length]);
 
   return (
-    <div className="px-4 md:px-8 pb-12">
-      <div className="max-w-7xl mx-auto">
+    <div className="pb-8">
+      <div>
         {/* Section divider */}
         <div className="flex items-center gap-3 mb-6">
           <div className="h-px flex-1 bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />

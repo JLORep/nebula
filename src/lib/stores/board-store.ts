@@ -31,7 +31,6 @@ interface BoardState {
   activeBoard: Board | null;
   selectedTask: Task | null;
   agentPanelOpen: boolean;
-  squadSidebarOpen: boolean;
   projects: Project[];
   activeProject: Project | null;
   newTaskModalOpen: boolean;
@@ -47,7 +46,7 @@ interface BoardState {
   selectTaskById: (taskId: string) => void;
   moveTask: (taskId: string, newStatus: TaskStatus) => void;
   toggleAgentPanel: () => void;
-  toggleSquadSidebar: () => void;
+
   updateAgentStatus: (agentId: string, status: AgentStatus, action?: string) => void;
   setActiveProject: (projectId: string) => void;
   setSprintFilter: (sprintId: string | null) => void;
@@ -70,7 +69,6 @@ export const useBoardStore = create<BoardState>((set, get) => ({
   activeBoard: mockBoard,
   selectedTask: null,
   agentPanelOpen: false,
-  squadSidebarOpen: false,
   projects: mockProjects,
   activeProject: mockProjects[0],
   newTaskModalOpen: false,
@@ -125,7 +123,6 @@ export const useBoardStore = create<BoardState>((set, get) => ({
   },
 
   toggleAgentPanel: () => set((s) => ({ agentPanelOpen: !s.agentPanelOpen })),
-  toggleSquadSidebar: () => set((s) => ({ squadSidebarOpen: !s.squadSidebarOpen })),
 
   updateAgentStatus: (agentId, status, action) => {
     const { activeBoard } = get();
