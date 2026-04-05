@@ -1,26 +1,534 @@
 @import "tailwindcss";
 
+/* ================================================================
+   FLOW — Nebula Enterprise Design System
+   "Trello redesigned by Steve Jobs as an AI from the future"
+   ================================================================ */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Void backgrounds */
+  --void: #050508;
+  --space: #08080e;
+  --nebula: #0c0c18;
+  --cosmos: #141424;
+  --modal: #0a0a14;
+
+  /* Text — always opacity-based */
+  --text-primary: rgba(255, 255, 255, 0.95);
+  --text-secondary: rgba(255, 255, 255, 0.55);
+  --text-tertiary: rgba(255, 255, 255, 0.35);
+  --text-ghost: rgba(255, 255, 255, 0.20);
+
+  /* Accent — Violet */
+  --accent: #8b5cf6;
+  --accent-hover: #a78bfa;
+  --accent-muted: rgba(139, 92, 246, 0.12);
+  --accent-glow: rgba(139, 92, 246, 0.20);
+
+  /* Secondary — Cyan */
+  --cyan: #06b6d4;
+  --cyan-muted: rgba(6, 182, 212, 0.10);
+
+  /* Semantic */
+  --success: #34d399;
+  --success-muted: rgba(52, 211, 153, 0.10);
+  --warning: #fbbf24;
+  --warning-muted: rgba(251, 191, 36, 0.10);
+  --danger: #f87171;
+  --danger-muted: rgba(248, 113, 113, 0.10);
+  --info: #60a5fa;
+  --info-muted: rgba(96, 165, 250, 0.10);
+
+  /* Surfaces */
+  --surface-0: rgba(255, 255, 255, 0.02);
+  --surface-1: rgba(255, 255, 255, 0.04);
+  --surface-2: rgba(255, 255, 255, 0.06);
+  --surface-3: rgba(255, 255, 255, 0.08);
+
+  /* Borders */
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border-default: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.14);
+  --border-accent: rgba(139, 92, 246, 0.30);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-void: var(--void);
+  --color-space: var(--space);
+  --color-nebula: var(--nebula);
+  --color-cosmos: var(--cosmos);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-muted: var(--accent-muted);
+  --color-accent-glow: var(--accent-glow);
+  --color-success: var(--success);
+  --color-success-muted: var(--success-muted);
+  --color-warning: var(--warning);
+  --color-warning-muted: var(--warning-muted);
+  --color-danger: var(--danger);
+  --color-danger-muted: var(--danger-muted);
+  --color-info: var(--info);
+  --color-info-muted: var(--info-muted);
+  --color-surface-0: var(--surface-0);
+  --color-surface-1: var(--surface-1);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-border-subtle: var(--border-subtle);
+  --color-border-default: var(--border-default);
+  --color-border-strong: var(--border-strong);
+  --color-border-accent: var(--border-accent);
+  --color-modal: var(--modal);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ================================================================
+   LIGHT THEME — Apple-grade white aesthetic
+   ================================================================ */
+
+[data-theme="light"] {
+  color-scheme: light;
+
+  /* Backgrounds — slightly warm off-whites */
+  --void: #f5f5f7;
+  --space: #f0f0f3;
+  --nebula: #eaeaef;
+  --cosmos: #e0e0e6;
+  --modal: #f8f8fa;
+
+  /* Foreground inversion — the key trick
+     Tailwind's text-white/XX and bg-white/[0.XX] all reference --color-white.
+     In light mode, white becomes dark so the same opacity semantics work. */
+  --color-white: #1d1d1f;
+
+  /* Text */
+  --text-primary: rgba(0, 0, 0, 0.88);
+  --text-secondary: rgba(0, 0, 0, 0.55);
+  --text-tertiary: rgba(0, 0, 0, 0.35);
+  --text-ghost: rgba(0, 0, 0, 0.15);
+
+  /* Accent — slightly deeper for contrast on white */
+  --accent: #7c3aed;
+  --accent-hover: #6d28d9;
+  --accent-muted: rgba(124, 58, 237, 0.08);
+  --accent-glow: rgba(124, 58, 237, 0.12);
+
+  /* Semantic — slightly muted for light bg */
+  --success: #059669;
+  --success-muted: rgba(5, 150, 105, 0.08);
+  --warning: #d97706;
+  --warning-muted: rgba(217, 119, 6, 0.08);
+  --danger: #dc2626;
+  --danger-muted: rgba(220, 38, 38, 0.08);
+  --info: #2563eb;
+  --info-muted: rgba(37, 99, 235, 0.08);
+
+  /* Surfaces — dark tints on light background */
+  --surface-0: rgba(0, 0, 0, 0.02);
+  --surface-1: rgba(0, 0, 0, 0.03);
+  --surface-2: rgba(0, 0, 0, 0.05);
+  --surface-3: rgba(0, 0, 0, 0.08);
+
+  /* Borders */
+  --border-subtle: rgba(0, 0, 0, 0.06);
+  --border-default: rgba(0, 0, 0, 0.10);
+  --border-strong: rgba(0, 0, 0, 0.18);
+  --border-accent: rgba(124, 58, 237, 0.25);
+}
+
+/* Light theme scrollbar */
+[data-theme="light"] ::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.12);
+}
+[data-theme="light"] ::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.25);
+}
+
+/* Light theme text gradient */
+[data-theme="light"] .text-gradient {
+  background: linear-gradient(to bottom right, #1d1d1f, rgba(29, 29, 31, 0.5));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Light theme edge highlight */
+[data-theme="light"] .edge-highlight::before {
+  background: linear-gradient(to right, transparent, rgba(0, 0, 0, 0.06), transparent);
+}
+
+/* Light theme glows — subtler on white */
+[data-theme="light"] .glow-accent {
+  box-shadow: 0 2px 20px rgba(124, 58, 237, 0.10), 0 0 40px rgba(124, 58, 237, 0.05);
+}
+[data-theme="light"] .glow-success { box-shadow: 0 2px 16px rgba(5, 150, 105, 0.10); }
+[data-theme="light"] .glow-warning { box-shadow: 0 2px 16px rgba(217, 119, 6, 0.10); }
+[data-theme="light"] .glow-danger { box-shadow: 0 2px 16px rgba(220, 38, 38, 0.10); }
+
+/* ================================================================
+   BASE
+   ================================================================ */
+
+/* Apple-grade easing curves */
+:root {
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+html {
+  background: var(--void);
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: transparent;
+  color: var(--text-primary);
 }
+
+/* Momentum-style smooth scroll for all scroll containers */
+.scroll-smooth-y {
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  scroll-behavior: smooth;
+}
+
+.scroll-smooth-x {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x proximity;
+}
+
+.scroll-smooth-x > * {
+  scroll-snap-align: start;
+}
+
+/* ================================================================
+   SCROLLBAR — invisible until hovered
+   ================================================================ */
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+/* ================================================================
+   GLASS UTILITIES
+   ================================================================ */
+
+.glass {
+  background: var(--surface-1);
+  backdrop-filter: blur(12px) saturate(120%);
+  -webkit-backdrop-filter: blur(12px) saturate(120%);
+  border: 1px solid var(--border-subtle);
+  transform: translateZ(0);
+}
+
+.glass-strong {
+  background: var(--surface-2);
+  backdrop-filter: blur(14px) saturate(130%);
+  -webkit-backdrop-filter: blur(14px) saturate(130%);
+  border: 1px solid var(--border-default);
+  transform: translateZ(0);
+}
+
+/* Force GPU compositing layer — use on blur containers, animated elements */
+.gpu {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Contain layout recalculations to element boundary */
+.contain-paint {
+  contain: layout style paint;
+}
+
+.glass-hover:hover {
+  background: var(--surface-2);
+  border-color: var(--border-strong);
+}
+
+/* Top edge highlight for glass cards */
+.edge-highlight::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 16px;
+  right: 16px;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.10), transparent);
+  pointer-events: none;
+}
+
+/* Gradient border for featured elements */
+.gradient-border::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(180deg, rgba(139, 92, 246, 0.25) 0%, rgba(139, 92, 246, 0.03) 50%, transparent 100%);
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: xor;
+  pointer-events: none;
+}
+
+/* Glow effect for accent elements */
+.glow-accent {
+  box-shadow: 0 0 30px rgba(139, 92, 246, 0.12), 0 0 60px rgba(139, 92, 246, 0.06);
+}
+
+.glow-success {
+  box-shadow: 0 0 20px rgba(52, 211, 153, 0.12);
+}
+
+.glow-warning {
+  box-shadow: 0 0 20px rgba(251, 191, 36, 0.12);
+}
+
+.glow-danger {
+  box-shadow: 0 0 20px rgba(248, 113, 113, 0.12);
+}
+
+/* ================================================================
+   TEXT UTILITIES
+   ================================================================ */
+
+.text-gradient {
+  background: linear-gradient(to bottom right, #ffffff, rgba(255, 255, 255, 0.4));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-accent {
+  background: linear-gradient(135deg, #a78bfa, #818cf8, #06b6d4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ================================================================
+   ANIMATIONS
+   ================================================================ */
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-shimmer {
+  background-size: 200% 100%;
+  animation: shimmer 3s linear infinite;
+}
+
+/* ================================================================
+   ACETERNITY COMPONENT ANIMATIONS
+   ================================================================ */
+
+@keyframes spotlight {
+  0% {
+    opacity: 0;
+    transform: translate(-72%, -62%) scale(0.5);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -40%) scale(1);
+  }
+}
+
+.animate-spotlight {
+  animation: spotlight 2s ease 0.75s 1 forwards;
+}
+
+@keyframes meteor-effect {
+  0% {
+    transform: rotate(215deg) translateX(0);
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(215deg) translateX(-600px);
+    opacity: 0;
+  }
+}
+
+.animate-meteor-effect {
+  animation: meteor-effect 5s linear infinite;
+}
+
+/* Gradient background animations for bento cards */
+@keyframes moveHorizontal {
+  0% { transform: translateX(-50%) translateY(-10%); }
+  50% { transform: translateX(50%) translateY(10%); }
+  100% { transform: translateX(-50%) translateY(-10%); }
+}
+
+@keyframes moveInCircle {
+  0% { transform: rotate(0deg); }
+  50% { transform: rotate(180deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes moveVertical {
+  0% { transform: translateY(-50%); }
+  50% { transform: translateY(50%); }
+  100% { transform: translateY(-50%); }
+}
+
+/* Typing cursor blink */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.animate-blink {
+  animation: blink 1s step-end infinite;
+}
+
+/* Live pulse ring — opacity-only for perf (no scale transform) */
+@keyframes ping-slow {
+  0%, 100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.75;
+  }
+}
+
+.animate-ping-slow {
+  animation: ping-slow 2s ease-in-out infinite;
+}
+
+/* Gradient text shimmer */
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-gradient-text {
+  background-size: 200% 200%;
+  animation: gradient-shift 4s ease infinite;
+}
+
+/* Card stagger appear — CSS-only replacement for framer-motion stagger
+   Each card sets animation-delay via inline style for the cascade effect.
+   Uses transform for GPU compositing (no layout triggers).
+   Apple-grade ease-out-expo curve for the satisfying deceleration. */
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Smooth content crossfade for view transitions */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* AI card landing effect — brief accent border flash when a task moves columns */
+.ai-card-landed {
+  border-color: rgba(139, 92, 246, 0.4) !important;
+  animation: ai-land-pulse 1.8s ease-out forwards;
+}
+
+@keyframes ai-land-pulse {
+  0% {
+    border-color: rgba(139, 92, 246, 0.5);
+    box-shadow: 0 0 24px 4px rgba(139, 92, 246, 0.2);
+  }
+  100% {
+    border-color: rgba(255, 255, 255, 0.06);
+    box-shadow: 0 0 0px 0px rgba(139, 92, 246, 0);
+  }
+}
+
+/* Terminal line appear — slide in from left with fade */
+.terminal-line-new {
+  animation: termLineIn 0.25s ease-out;
+}
+
+@keyframes termLineIn {
+  from {
+    opacity: 0;
+    transform: translateX(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Pulse scale — GPU-composited replacement for JS-driven scale animations */
+@keyframes pulse-scale {
+  0%, 100% { transform: scale(1); opacity: 0.7; }
+  50% { transform: scale(1.4); opacity: 1; }
+}
+
+.animate-pulse-scale {
+  animation: pulse-scale 2s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+/* Force GPU layer on children undergoing layout animations */
+.gpu-children > * {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Scrollbar hiding for terminal */
+.scrollbar-none::-webkit-scrollbar { display: none; }
+.scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }

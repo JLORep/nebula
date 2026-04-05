@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cd /c/trenchkings && \\\\\nls -d */ 2>/dev/null)",
+      "Bash(git init:*)",
+      "Bash(tail:*)",
+      "Bash(cp:*)",
+      "WebFetch(domain:ui.aceternity.com)",
+      "Bash(curl:*)",
+      "WebFetch(domain:nodus-agent-marketing-template.vercel.app)",
+      "WebFetch(domain:simplistic-saas-template.vercel.app)",
+      "WebFetch(domain:minimal-portfolio-website-template.vercel.app)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:github.com)",
+      "WebSearch",
+      "WebFetch(domain:notus-agent-marketing-template.vercel.app)",
+      "Bash(head:*)",
+      "WebFetch(domain:www.atlassian.com)",
+      "Bash(find:*)",
+      "Bash(cd:*)"
+    ]
+  }
+}
